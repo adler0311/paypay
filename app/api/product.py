@@ -10,9 +10,15 @@ from sqlalchemy.orm import Session, Query
 from app.api.deps import get_current_active_user
 from app.api import deps
 from app.domain.product import Product
-from app.service.product import ProductCreate, ProductUpdate, is_chosung_only
+from app.service.product import (
+    ProductCreateIn,
+    ProductUpdateIn,
+    is_chosung_only,
+    get_chosung,
+    paginate,
+    ProductOut,
+)
 from app.domain.user import User
-from app.service.utils import paginate, get_chosung
 from app.utils import CustomJSONResponse
 
 router = APIRouter()
@@ -21,7 +27,7 @@ router = APIRouter()
 @router.post("/", status_code=201, response_class=CustomJSONResponse)
 def create_product(
     current_user: Annotated[User, Depends(get_current_active_user)],
-    product_create: ProductCreate,
+    product_create: ProductCreateIn,
     session: Session = Depends(dependency=deps.get_db),
 ):
     product = Product(**product_create.to_dict())
@@ -34,7 +40,7 @@ def create_product(
 def update_product(
     current_user: Annotated[User, Depends(get_current_active_user)],
     product_id,
-    product_update: ProductUpdate,
+    product_update: ProductUpdateIn,
     session: Session = Depends(dependency=deps.get_db),
 ):
     update_stmt = (
@@ -93,4 +99,4 @@ def product_details(
     product: Product | None = session.scalar(stmt)
     if product is None:
         raise HTTPException(status_code=404, detail="Item not found")
-    return product
+    return ProductOut.model_validate(product)
