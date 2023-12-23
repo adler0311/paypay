@@ -13,11 +13,10 @@ from app.domain.product import Product
 from app.service.product import (
     ProductCreateIn,
     ProductUpdateIn,
-    is_chosung_only,
-    get_chosung,
     paginate,
     ProductOut,
 )
+from app.service.utils import is_chosung_only, get_chosung
 from app.domain.user import User
 from app.utils import CustomJSONResponse
 

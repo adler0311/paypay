@@ -12,6 +12,7 @@ from pydantic.v1.generics import GenericModel
 from sqlalchemy import Select
 
 from app.domain.product import Product
+from app.service.utils import get_chosung
 
 
 class ProductCreateIn(BaseModel):
@@ -53,34 +54,6 @@ class ProductOut(BaseModel):
     size: ProductSize
 
     model_config = ConfigDict(from_attributes=True)
-
-
-def is_chosung_only(s):
-    chosung_list = [
-        "ㄱ",
-        "ㄲ",
-        "ㄴ",
-        "ㄷ",
-        "ㄸ",
-        "ㄹ",
-        "ㅁ",
-        "ㅂ",
-        "ㅃ",
-        "ㅅ",
-        "ㅆ",
-        "ㅇ",
-        "ㅈ",
-        "ㅉ",
-        "ㅊ",
-        "ㅋ",
-        "ㅌ",
-        "ㅍ",
-        "ㅎ",
-    ]
-    for char in s:
-        if char not in chosung_list:
-            return False
-    return True
 
 
 def encode_id(identifier: int) -> str:
@@ -134,17 +107,3 @@ class Paginator:
 def paginate(session, query: Select, max_results: int, cursor: str | None):
     paginator = Paginator(session, query, max_results, cursor)
     return paginator.get_response()
-
-
-def get_chosung(word):
-    chosungs = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
-    result = ""
-
-    for char in word:
-        if "가" <= char <= "힣":
-            # 유니코드 상에서 한글의 시작 부분인 '가'에서 뺀 값으로 인덱스 계산
-            chosung_index = (ord(char) - ord("가")) // 588
-            result += chosungs[chosung_index]
-        else:
-            result += char
-    return result
