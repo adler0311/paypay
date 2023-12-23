@@ -17,11 +17,8 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 def get_db() -> Generator:
-    try:
-        db = SessionLocal()
-        yield db
-    finally:
-        db.close()
+    with Session(engine) as session:
+        yield session
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")

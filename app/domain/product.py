@@ -13,6 +13,7 @@ class ProductSize(enum.Enum):
 
 class Product(Base):
     __tablename__ = "products"
+    __table_args__ = {"extend_existing": True}
     id = Column(Integer, primary_key=True, index=True)
     category = Column(String(length=100), nullable=False)
     price = Column(Integer, nullable=False)

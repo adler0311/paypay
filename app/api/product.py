@@ -12,6 +12,7 @@ from app.api import deps
 from app.domain.product import Product
 from app.service.product import ProductCreate, ProductUpdate
 from domain.user import User
+from service.utils import paginate
 from utils import CustomJSONResponse
 
 router = APIRouter()
@@ -66,12 +67,11 @@ def delete_product(
 @router.get("/", status_code=200, response_class=CustomJSONResponse)
 def list_product(
     current_user: Annotated[User, Depends(get_current_active_user)],
+    cursor: str | None = None,
+    limit: int = 10,
     session: Session = Depends(dependency=deps.get_db),
 ):
-    stmt = select(Product)
-    products: list[Product] = session.scalars(stmt).all()
-
-    return dict(products=products)
+    return paginate(session, select(Product).order_by(Product.id), limit, cursor)
 
 
 @router.get("/{product_id}", status_code=200, response_class=CustomJSONResponse)
