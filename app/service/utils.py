@@ -38,12 +38,12 @@ class Paginator:
         self.next_cursor = None
 
     def get_response(self):
-        if self.cursor is None:
-            query = self.query.limit(self.max_results + 1)
-        else:
-            ident = decode_id(self.cursor)
-            query = self.query.where(Product.id > ident).limit(self.max_results + 1)
-        items = self._get_next(query)
+        # if self.cursor is None:
+        #     query = self.query.limit(self.max_results + 1)
+        # else:
+        #     ident = decode_id(self.cursor)
+        #     query = self.query.where(Product.id > ident).limit(self.max_results + 1)
+        items = self._get_next(self.query)
         return {"count": len(items), "next_cursor": self.next_cursor, "items": items}
 
     def _get_next(self, query: Select) -> list[Product]:
@@ -59,3 +59,17 @@ class Paginator:
 def paginate(session, query: Select, max_results: int, cursor: str | None):
     paginator = Paginator(session, query, max_results, cursor)
     return paginator.get_response()
+
+
+def get_chosung(word):
+    chosungs = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
+    result = ""
+
+    for char in word:
+        if "가" <= char <= "힣":
+            # 유니코드 상에서 한글의 시작 부분인 '가'에서 뺀 값으로 인덱스 계산
+            chosung_index = (ord(char) - ord("가")) // 588
+            result += chosungs[chosung_index]
+        else:
+            result += char
+    return result

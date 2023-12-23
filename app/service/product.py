@@ -4,6 +4,7 @@ from typing import Union
 from pydantic import BaseModel
 
 from app.domain.product import ProductSize
+from service.utils import get_chosung
 
 
 class ProductCreate(BaseModel):
@@ -16,6 +17,12 @@ class ProductCreate(BaseModel):
     expiration_date: date
     size: ProductSize
 
+    def to_dict(self):
+        result = self.model_dump()
+        result["size"] = result["size"].name
+        result["name_chosung"] = get_chosung(result["name"])
+        return result
+
 
 class ProductUpdate(BaseModel):
     category: str | None = None
@@ -27,3 +34,30 @@ class ProductUpdate(BaseModel):
     expiration_date: date | None = None
     size: ProductSize | None = None
 
+
+def is_chosung_only(s):
+    chosung_list = [
+        "ㄱ",
+        "ㄲ",
+        "ㄴ",
+        "ㄷ",
+        "ㄸ",
+        "ㄹ",
+        "ㅁ",
+        "ㅂ",
+        "ㅃ",
+        "ㅅ",
+        "ㅆ",
+        "ㅇ",
+        "ㅈ",
+        "ㅉ",
+        "ㅊ",
+        "ㅋ",
+        "ㅌ",
+        "ㅍ",
+        "ㅎ",
+    ]
+    for char in s:
+        if char not in chosung_list:
+            return False
+    return True

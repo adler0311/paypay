@@ -1,7 +1,6 @@
 import enum
 
 from sqlalchemy import Column, Integer, String, Date, Enum
-from sqlalchemy.orm import declarative_base
 
 from app.domain import Base
 
@@ -19,7 +18,8 @@ class Product(Base):
     price = Column(Integer, nullable=False)
     cost = Column(Integer, nullable=False)
     name = Column(String(length=100), nullable=False)
+    name_chosung = Column(String(length=100), nullable=True)
     description = Column(String(length=100), nullable=False)
     barcode = Column(String(length=100), nullable=False)
     expiration_date = Column(Date, nullable=False)
-    size = Column(Enum(ProductSize, native_enum=False), nullable=False)
+    size = Column(Enum(ProductSize), nullable=False)

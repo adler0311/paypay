@@ -4,15 +4,15 @@ from typing import Annotated
 
 from fastapi import APIRouter, HTTPException
 from fastapi import Depends
-from sqlalchemy import select, update, CursorResult, delete, Select
+from sqlalchemy import select, update, CursorResult, delete, Select, text, TextClause
 from sqlalchemy.orm import Session, Query
 
 from api.deps import get_current_active_user
 from app.api import deps
 from app.domain.product import Product
-from app.service.product import ProductCreate, ProductUpdate
+from app.service.product import ProductCreate, ProductUpdate, is_chosung_only
 from domain.user import User
-from service.utils import paginate
+from service.utils import paginate, get_chosung
 from utils import CustomJSONResponse
 
 router = APIRouter()
@@ -24,11 +24,10 @@ def create_product(
     product_create: ProductCreate,
     session: Session = Depends(dependency=deps.get_db),
 ):
-    db_product = Product(**product_create.model_dump())
-    print(db_product)
-    session.add(db_product)
+    product = Product(**product_create.to_dict())
+    session.add(product)
     session.commit()
-    return dict(id=db_product.id)
+    return dict(id=product.id)
 
 
 @router.patch("/{product_id}", status_code=200, response_class=CustomJSONResponse)
@@ -74,7 +73,13 @@ def list_product(
 ):
     query: Select = select(Product).order_by(Product.id)
     if search_keyword is not None:
-        query = query.where(Product.name.like(f"%{search_keyword}%"))
+        if is_chosung_only(search_keyword):
+            chosung_keyword = get_chosung(search_keyword)
+            query: Select = query.where(
+                Product.name_chosung.like(f"%{chosung_keyword}%")
+            )
+        else:
+            query: Select = query.where(Product.name.like(f"%{search_keyword}%"))
     return paginate(session, query, limit, cursor)
 
 
