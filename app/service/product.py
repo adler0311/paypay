@@ -1,5 +1,4 @@
-from datetime import date, datetime
-from typing import Union
+from datetime import date
 
 from pydantic import BaseModel, ConfigDict
 
@@ -77,11 +76,9 @@ def is_chosung_only(s):
 
 import base64
 
-from cryptography.fernet import Fernet
-from pydantic import Field, parse_obj_as
+from pydantic import Field
 from pydantic.v1.generics import GenericModel
 from sqlalchemy import Select
-from sqlalchemy.orm import Query
 
 from app.domain.product import Product
 from app.service.product import ProductOut

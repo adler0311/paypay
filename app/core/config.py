@@ -1,7 +1,5 @@
-import secrets
-from typing import Optional
 
-from pydantic import PostgresDsn, model_validator, MySQLDsn
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 

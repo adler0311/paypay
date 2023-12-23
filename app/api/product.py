@@ -4,8 +4,8 @@ from typing import Annotated
 
 from fastapi import APIRouter, HTTPException
 from fastapi import Depends
-from sqlalchemy import select, update, CursorResult, delete, Select, text, TextClause
-from sqlalchemy.orm import Session, Query
+from sqlalchemy import select, update, CursorResult, delete, Select
+from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_active_user
 from app.api import deps

@@ -23,6 +23,7 @@ orjson = "^3.9.10"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.3"
+autoflake = "^2.2.1"
 
 [build-system]
 requires = ["poetry-core"]

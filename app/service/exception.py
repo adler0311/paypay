@@ -1,4 +1,3 @@
-import inspect
 
 
 class ObjectNotFound(Exception):
