@@ -5,6 +5,15 @@ from pydantic import BaseModel, ConfigDict
 from app.domain.product import ProductSize
 
 
+import base64
+
+from pydantic import Field
+from pydantic.v1.generics import GenericModel
+from sqlalchemy import Select
+
+from app.domain.product import Product
+
+
 class ProductCreateIn(BaseModel):
     category: str
     price: int
@@ -72,16 +81,6 @@ def is_chosung_only(s):
         if char not in chosung_list:
             return False
     return True
-
-
-import base64
-
-from pydantic import Field
-from pydantic.v1.generics import GenericModel
-from sqlalchemy import Select
-
-from app.domain.product import Product
-from app.service.product import ProductOut
 
 
 def encode_id(identifier: int) -> str:
