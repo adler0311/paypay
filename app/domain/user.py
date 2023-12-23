@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, Boolean
 
 from app.domain import Base
 
@@ -10,3 +10,4 @@ class User(Base):
     username = Column(String(length=100), nullable=False)
     email = Column(String(length=100), nullable=False)
     hashed_password = Column(String(length=100), nullable=False)
+    disabled = Column(Boolean, nullable=False)

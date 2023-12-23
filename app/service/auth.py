@@ -56,6 +56,7 @@ def create_user(signup_in: SignUpIn, session: Session):
         username=signup_in.username,
         email=signup_in.email,
         hashed_password=pwd_context.hash(signup_in.password),
+        disabled=False,
     )
     session.add(user)
     session.commit()
