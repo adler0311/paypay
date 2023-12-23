@@ -8,10 +8,10 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session, sessionmaker
 from starlette import status
 
+from app.core.config import settings
 from app.db.engine import engine
-from core.config import settings
-from domain.user import User
-from service.auth import get_user
+from app.domain.user import User
+from app.service.auth import get_user
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

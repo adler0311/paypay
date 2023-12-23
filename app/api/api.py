@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 
-from api import auth
-from app.api import product
+from app.api import auth, product
 
 api_router = APIRouter()
 api_router.include_router(product.router, prefix="/products", tags=["Product"])

@@ -3,15 +3,14 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
-from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from starlette import status
 
-from api import deps
-from api.deps import get_current_active_user
-from core.config import settings
-from domain.user import User
-from service.auth import (
+from app.api import deps
+from app.api.deps import get_current_active_user
+from app.core.config import settings
+from app.domain.user import User
+from app.service.auth import (
     Token,
     authenticate_user,
     create_access_token,
@@ -19,7 +18,7 @@ from service.auth import (
     SignUpIn,
     MeOut,
 )
-from utils import CustomJSONResponse
+from app.utils import CustomJSONResponse
 
 router = APIRouter()
 

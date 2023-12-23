@@ -6,7 +6,7 @@ from pydantic.v1.generics import GenericModel
 from sqlalchemy import Select
 from sqlalchemy.orm import Query
 
-from domain.product import Product
+from app.domain.product import Product
 
 secret_key = Fernet.generate_key()
 f = Fernet(secret_key)

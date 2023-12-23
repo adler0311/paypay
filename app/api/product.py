@@ -7,13 +7,13 @@ from fastapi import Depends
 from sqlalchemy import select, update, CursorResult, delete, Select, text, TextClause
 from sqlalchemy.orm import Session, Query
 
-from api.deps import get_current_active_user
+from app.api.deps import get_current_active_user
 from app.api import deps
 from app.domain.product import Product
 from app.service.product import ProductCreate, ProductUpdate, is_chosung_only
-from domain.user import User
-from service.utils import paginate, get_chosung
-from utils import CustomJSONResponse
+from app.domain.user import User
+from app.service.utils import paginate, get_chosung
+from app.utils import CustomJSONResponse
 
 router = APIRouter()
 

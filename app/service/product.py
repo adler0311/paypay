@@ -4,7 +4,7 @@ from typing import Union
 from pydantic import BaseModel
 
 from app.domain.product import ProductSize
-from service.utils import get_chosung
+from app.service.utils import get_chosung
 
 
 class ProductCreate(BaseModel):

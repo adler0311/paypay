@@ -6,8 +6,8 @@ from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from core.config import settings
-from domain.user import User
+from app.core.config import settings
+from app.domain.user import User
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
