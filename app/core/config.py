@@ -13,21 +13,18 @@ class Settings(BaseSettings):
     MYSQL_USER: str
     MYSQL_PASSWORD: str
     MYSQL_DB: str
+    MYSQL_TEST_DB: str | None = None
     MYSQL_PORT: str
-    SQLALCHEMY_DATABASE_URI: PostgresDsn | None = None
+    MYSQL_DATABASE_URI: str | None = None
+    MYSQL_TEST_DATABASE_URI: str | None = None
 
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
 
-
     @model_validator(mode='after')
     def assemble_db_connection(self):
-        if isinstance(self.SQLALCHEMY_DATABASE_URI, str):
-            return self
-        self.SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{self.MYSQL_USER}:{self.MYSQL_PASSWORD}@{self.MYSQL_SERVER}:{self.MYSQL_PORT}/{self.MYSQL_DB}'
+        self.MYSQL_DATABASE_URI = f'mysql+pymysql://{self.MYSQL_USER}:{self.MYSQL_PASSWORD}@{self.MYSQL_SERVER}:{self.MYSQL_PORT}/{self.MYSQL_DB}'
+        self.MYSQL_TEST_DATABASE_URI = f'mysql+pymysql://{self.MYSQL_USER}:{self.MYSQL_PASSWORD}@{self.MYSQL_SERVER}:{self.MYSQL_PORT}/{self.MYSQL_TEST_DB}'
         return self
-
-
-
 
 
 settings = Settings()

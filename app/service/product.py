@@ -15,3 +15,15 @@ class ProductCreate(BaseModel):
     barcode: str
     expiration_date: date
     size: ProductSize
+
+
+class ProductUpdate(BaseModel):
+    category: str | None = None
+    price: int | None = None
+    cost: int | None = None
+    name: str | None = None
+    description: str | None = None
+    barcode: str | None = None
+    expiration_date: date | None = None
+    size: ProductSize | None = None
+

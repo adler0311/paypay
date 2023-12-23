@@ -1,8 +1,14 @@
-from sqlalchemy.orm import Session
+from typing import Generator
+
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.db.engine import engine
 
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-def get_session():
-    with Session(engine) as session:
-        yield session
+def get_db() -> Generator:
+    try:
+        db = SessionLocal()
+        yield db
+    finally:
+        db.close()
