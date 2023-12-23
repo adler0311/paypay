@@ -4,8 +4,8 @@ from typing import Annotated
 
 from fastapi import APIRouter, HTTPException
 from fastapi import Depends
-from sqlalchemy import select, update, CursorResult, delete
-from sqlalchemy.orm import Session
+from sqlalchemy import select, update, CursorResult, delete, Select
+from sqlalchemy.orm import Session, Query
 
 from api.deps import get_current_active_user
 from app.api import deps
@@ -67,11 +67,15 @@ def delete_product(
 @router.get("/", status_code=200, response_class=CustomJSONResponse)
 def list_product(
     current_user: Annotated[User, Depends(get_current_active_user)],
+    search_keyword: str | None = None,
     cursor: str | None = None,
     limit: int = 10,
     session: Session = Depends(dependency=deps.get_db),
 ):
-    return paginate(session, select(Product).order_by(Product.id), limit, cursor)
+    query: Select = select(Product).order_by(Product.id)
+    if search_keyword is not None:
+        query = query.where(Product.name.like(f"%{search_keyword}%"))
+    return paginate(session, query, limit, cursor)
 
 
 @router.get("/{product_id}", status_code=200, response_class=CustomJSONResponse)

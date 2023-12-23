@@ -4,6 +4,7 @@ from cryptography.fernet import Fernet
 from pydantic import Field
 from pydantic.v1.generics import GenericModel
 from sqlalchemy import Select
+from sqlalchemy.orm import Query
 
 from domain.product import Product
 
