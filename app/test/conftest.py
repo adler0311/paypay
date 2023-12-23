@@ -4,7 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import text, create_engine
 from sqlalchemy.orm import Session
-from app.api.deps import get_db
+from app.api.deps import get_db, get_current_active_user
 from app.core.config import settings
 from app.db.engine import engine
 from app.domain.product import Base
@@ -33,5 +33,6 @@ def session(engine_test) -> Generator:
 @pytest.fixture(scope="function")
 def client(session: Session) -> Generator:
     app.dependency_overrides[get_db] = lambda: session
+    app.dependency_overrides[get_current_active_user] = lambda : None
     with TestClient(app) as c:
         yield c

@@ -20,7 +20,7 @@ def test_create_product(client: TestClient):
 
     assert response.status_code == 201
     data = response.json()
-    assert "id" in data
+    assert 'id' in data['data']
 
 
 @pytest.fixture
@@ -73,9 +73,8 @@ def test_list_product(client: TestClient, session: Session, a_product: Product):
     # given
 
     # when
-    response = client.get(f"/products")
+    response = client.get("/products")
 
     # then
     assert response.status_code == 200
-    data = response.json()
-    print(data)
+
